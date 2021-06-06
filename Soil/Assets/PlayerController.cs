@@ -16,8 +16,7 @@ public class PlayerController : MonoBehaviour
 
     private float jumpForce = 16.0f;
 
-    private float speed;
-    private float maxSpeed = 100.0f;
+    private float speed = 100.0f;
 
     private bool isGrounded;
 
@@ -50,15 +49,6 @@ public class PlayerController : MonoBehaviour
 
         move = (transform.right * _x + transform.forward * _z).normalized;
 
-        if (move != Vector3.zero)
-        {
-            speed += 5.0f;
-        }
-        else
-        {
-            speed = 0.0f;
-        }
-
         if (isGrounded && Input.GetKey(KeyCode.Space))
         {
             rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
@@ -67,7 +57,7 @@ public class PlayerController : MonoBehaviour
             rb.velocity = vel;
         }
 
-        speed = Mathf.Clamp(speed, 0.0f, maxSpeed);
+        roll.x = Mathf.Lerp(roll.x, -_x * 1.25f, Time.deltaTime * 3.0f);
     }
 
     private void FixedUpdate()
@@ -78,7 +68,7 @@ public class PlayerController : MonoBehaviour
         if (!isGrounded && rb.useGravity == true)
             vel.y -= 0.8f;
 
-        if (speed != 0.0f)
+        if (move != Vector3.zero)
         {
             bodyCollider.material = nonStickMaterial;
         }
