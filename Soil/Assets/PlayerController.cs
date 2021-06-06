@@ -34,6 +34,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private CapsuleCollider bodyCollider;
     [SerializeField] private PhysicMaterial nonStickMaterial;
 
+    [SerializeField] private Player _player;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
