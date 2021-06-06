@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
 
-    private float drag = 0.8f;
+    private float drag = 0.85f;
 
     private float pitch, yaw;
 
