@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private Rigidbody rb;
 
-    private float drag = 0.85f;
+    private float drag = 0.9f;
 
     private float pitch, yaw;
 
@@ -14,9 +14,9 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 move;
 
-    private float jumpForce = 16.0f;
+    private float jumpForce = 10.0f;
 
-    private float speed = 100.0f;
+    private float speed = 40.0f;
 
     private bool isGrounded;
 
@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
         vel.x *= drag; vel.z *= drag;
 
         if (!isGrounded && rb.useGravity == true)
-            vel.y -= 0.8f;
+            vel.y -= 0.3f;
 
         if (move != Vector3.zero)
         {
