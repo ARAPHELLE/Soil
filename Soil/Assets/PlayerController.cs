@@ -14,22 +14,18 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 move;
 
-    private float jumpForce = 10.0f;
-
-    private float speed = 30.0f;
-
-    private float walkSpeed = 40.0f;
-
-    private float runSpeed;
-
     private bool isGrounded;
 
     private float sensitivity = 1.725f;
+
+    public ParticleSystem landFX;
 
     private Vector3 cameraPosition;
 
     [SerializeField] private Transform cameraTransform;
     private Camera cameraComponent;
+    private float camOffset;
+    private float targetCamOffset;
 
     private const float groundCheckSize = 0.2f;
 
@@ -40,6 +36,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PhysicMaterial nonStickMaterial;
 
     [SerializeField] private Player _player;
+
+    private float airTime;
 
     private void Start()
     {
@@ -64,14 +62,12 @@ public class PlayerController : MonoBehaviour
         {
             rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
             Vector3 vel = rb.velocity;
-            vel.y += jumpForce;
+            vel.y += _player.jumpForce;
             rb.velocity = vel;
             _player.stamina -= _player.jumpDrain;
         }
 
-        runSpeed = walkSpeed * 1.75f;
-
-        roll.x = Mathf.Lerp(roll.x, -_x * 1.25f, Time.deltaTime * 3.0f);
+        //roll.x = Mathf.Lerp(roll.x, -_x * 1.25f, Time.deltaTime * 3.0f);
 
         if (_player.CanRun() && Input.GetKey(KeyCode.LeftShift))
         {
@@ -101,19 +97,25 @@ public class PlayerController : MonoBehaviour
             bodyCollider.material = null;
 
         rb.velocity = vel;
-        rb.AddForce(move * speed, ForceMode.Acceleration);
+        rb.AddForce(move * _player.speed, ForceMode.Acceleration);
 
         transform.localEulerAngles = new Vector3(0, yaw, 0);
 
         if (_player.sprinting)
         {
             _player.stamina -= 14f * Time.fixedDeltaTime;
-            speed = runSpeed;
+            _player.speed = _player.runSpeed;
         }
         else
         {
-            speed = walkSpeed;
+            _player.speed = _player.walkSpeed;
         }
+
+        targetCamOffset = Mathf.Lerp(targetCamOffset, 0.0f, Time.deltaTime * 8.0f);
+        camOffset = Mathf.Lerp(camOffset, targetCamOffset, Time.deltaTime * 12.0f);
+
+        CheckLand();
+        CheckAirTime();
     }
 
     private void LateUpdate()
@@ -126,9 +128,37 @@ public class PlayerController : MonoBehaviour
         #endregion
 
         #region Camera Position and Rotation
-        cameraPosition = new Vector3(transform.position.x, transform.position.y + 0.5f, transform.position.z);
+        cameraPosition = new Vector3(transform.position.x, transform.position.y + 0.5f + camOffset, transform.position.z);
         cameraTransform.position = cameraPosition;
         cameraTransform.eulerAngles = new Vector3(pitch + roll.z, yaw, roll.x);
         #endregion
+    }
+
+    private void CheckAirTime()
+    {
+        if (isGrounded)
+        {
+            airTime = 0f;
+        }
+        else
+        {
+            airTime += Time.deltaTime;
+        }
+    }
+    private void CheckLand()
+    {
+        if (airTime > 0)
+        {
+            if (isGrounded)
+            {
+                Debug.Log("Landed");
+                targetCamOffset = -0.6f;
+
+                if (airTime > 1f)
+                {
+                    landFX.Play();
+                }
+            }
+        }
     }
 }

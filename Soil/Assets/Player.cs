@@ -13,6 +13,14 @@ public class Player : MonoBehaviour
 
     public int jumpDrain = 10;
 
+    public float jumpForce = 10.0f;
+
+    public float speed = 30.0f;
+
+    public float walkSpeed = 30.0f;
+
+    public float runSpeed;
+
     public bool grounded;
 
     public bool sprinting;
@@ -34,6 +42,8 @@ public class Player : MonoBehaviour
         health = Mathf.Clamp(health, 0, maxHealth);
         hunger = Mathf.Clamp(hunger, 0, maxHunger);
         stamina = Mathf.Clamp(stamina, 0, maxStamina);
+
+        runSpeed = walkSpeed * 1.25f;
 
         UpdateHealthAmountText();
 
