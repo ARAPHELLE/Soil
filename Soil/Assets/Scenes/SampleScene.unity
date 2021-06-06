@@ -178,8 +178,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c4f7f8debbcf3cf4faf280628cab55f9, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1ef0c979bebf2ed429bfc18b6b5bad5d, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
@@ -494,8 +494,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c4f7f8debbcf3cf4faf280628cab55f9, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1ef0c979bebf2ed429bfc18b6b5bad5d, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
@@ -1333,8 +1333,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c4f7f8debbcf3cf4faf280628cab55f9, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1ef0c979bebf2ed429bfc18b6b5bad5d, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
@@ -1719,7 +1719,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 110.9, y: 182.4}
+  m_AnchoredPosition: {x: 110.8999, y: 182.4}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &790629541
@@ -2543,6 +2543,12 @@ MonoBehaviour:
   health: 100
   stamina: 100
   hunger: 100
+  maxHealth: 100
+  maxStamina: 100
+  maxHunger: 100
+  jumpDrain: 10
+  grounded: 0
+  sprinting: 0
 --- !u!1 &1198132901
 GameObject:
   m_ObjectHideFlags: 0
@@ -2771,8 +2777,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c4f7f8debbcf3cf4faf280628cab55f9, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1ef0c979bebf2ed429bfc18b6b5bad5d, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
@@ -3280,8 +3286,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c4f7f8debbcf3cf4faf280628cab55f9, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1ef0c979bebf2ed429bfc18b6b5bad5d, type: 3}
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
@@ -3354,8 +3360,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: c4f7f8debbcf3cf4faf280628cab55f9, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 1ef0c979bebf2ed429bfc18b6b5bad5d, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
@@ -4494,7 +4500,7 @@ MonoBehaviour:
     m_Bits: 256
   bodyCollider: {fileID: 1859442193}
   nonStickMaterial: {fileID: 13400000, guid: 43d9f747806ee5d4e954b43afcfd8df5, type: 2}
-  _player: {fileID: 0}
+  _player: {fileID: 1069056354}
 --- !u!1 &1873836187
 GameObject:
   m_ObjectHideFlags: 0

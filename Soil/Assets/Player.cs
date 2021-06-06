@@ -5,8 +5,17 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private int health = 100, stamina = 100, hunger = 100;
-    private int maxHealth = 100, maxStamina = 100, maxHunger = 100;
+    public int health = 100;
+    public float stamina = 100;
+    public float hunger = 100;
+
+    public int maxHealth = 100, maxStamina = 100, maxHunger = 100;
+
+    public int jumpDrain = 10;
+
+    public bool grounded;
+
+    public bool sprinting;
 
     private Image healthBar, hungerBar, staminaBar;
     private Text healthAmountText;
@@ -31,10 +40,45 @@ public class Player : MonoBehaviour
         float healthFillPercent = (float)health / (float)maxHealth;
 
         healthBar.fillAmount = Mathf.Lerp(healthBar.fillAmount, healthFillPercent, Time.deltaTime * 8.0f);
+
+        float staminaFillPercent = (float)stamina / (float)maxStamina;
+
+        staminaBar.fillAmount = Mathf.Lerp(staminaBar.fillAmount, staminaFillPercent, Time.deltaTime * 8.0f);
+
+        float hungerFillPercent = (float)hunger / (float)maxHunger;
+
+        hungerBar.fillAmount = Mathf.Lerp(hungerBar.fillAmount, hungerFillPercent, Time.deltaTime * 8.0f);
+    }
+
+    private void FixedUpdate()
+    {
+        if (!sprinting && grounded && hunger > 0.0f)
+        {
+            stamina += 0.25f;
+        }
+
+        float num = 1.0f;
+
+        if (sprinting)
+        {
+            num *= 5.0f;
+        }
+
+        hunger -= 0.15f * Time.deltaTime * num;
     }
 
     void UpdateHealthAmountText()
     {
         healthAmountText.text = $"Health: {health}/{maxHealth}";
+    }
+
+    public bool CanRun()
+    {
+        return stamina > 0;
+    }
+
+    public bool CanJump()
+    {
+        return stamina >= jumpDrain;
     }
 }

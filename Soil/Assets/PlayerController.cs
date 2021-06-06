@@ -16,7 +16,11 @@ public class PlayerController : MonoBehaviour
 
     private float jumpForce = 10.0f;
 
-    private float speed = 40.0f;
+    private float speed = 30.0f;
+
+    private float walkSpeed = 40.0f;
+
+    private float runSpeed;
 
     private bool isGrounded;
 
@@ -25,7 +29,8 @@ public class PlayerController : MonoBehaviour
     private Vector3 cameraPosition;
 
     [SerializeField] private Transform cameraTransform;
-    
+    private Camera cameraComponent;
+
     private const float groundCheckSize = 0.2f;
 
     [SerializeField] private Transform groundCheck;
@@ -40,26 +45,44 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        cameraComponent = cameraTransform.GetComponent<Camera>();
     }
 
     private void Update()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckSize, groundMask);
 
+        _player.grounded = isGrounded;
+
         float _x = Input.GetAxisRaw("Horizontal");
         float _z = Input.GetAxisRaw("Vertical");
 
         move = (transform.right * _x + transform.forward * _z).normalized;
 
-        if (isGrounded && Input.GetKey(KeyCode.Space))
+        if (_player.CanJump() && isGrounded && Input.GetKeyDown(KeyCode.Space))
         {
             rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.z);
             Vector3 vel = rb.velocity;
             vel.y += jumpForce;
             rb.velocity = vel;
+            _player.stamina -= _player.jumpDrain;
         }
 
+        runSpeed = walkSpeed * 1.75f;
+
         roll.x = Mathf.Lerp(roll.x, -_x * 1.25f, Time.deltaTime * 3.0f);
+
+        if (_player.CanRun() && Input.GetKey(KeyCode.LeftShift))
+        {
+            _player.sprinting = true;
+            cameraComponent.fieldOfView = Mathf.Lerp(cameraComponent.fieldOfView, 110.0f, Time.deltaTime * 4.0f);
+        }
+        else
+        {
+            _player.sprinting = false;
+            cameraComponent.fieldOfView = Mathf.Lerp(cameraComponent.fieldOfView, 90.0f, Time.deltaTime * 4.0f);
+        }
     }
 
     private void FixedUpdate()
@@ -81,6 +104,16 @@ public class PlayerController : MonoBehaviour
         rb.AddForce(move * speed, ForceMode.Acceleration);
 
         transform.localEulerAngles = new Vector3(0, yaw, 0);
+
+        if (_player.sprinting)
+        {
+            _player.stamina--;
+            speed = runSpeed;
+        }
+        else
+        {
+            speed = walkSpeed;
+        }
     }
 
     private void LateUpdate()
