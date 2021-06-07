@@ -39,6 +39,8 @@ public class PlayerController : MonoBehaviour
 
     private float airTime;
 
+    public static bool inventoryOpen = false;
+
     private void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -78,6 +80,15 @@ public class PlayerController : MonoBehaviour
         {
             _player.sprinting = false;
             cameraComponent.fieldOfView = Mathf.Lerp(cameraComponent.fieldOfView, 90.0f, Time.deltaTime * 4.0f);
+        }
+
+        bool inventory = Input.GetKeyDown(KeyCode.Tab) || Input.GetKeyDown(KeyCode.I);
+
+        if(inventory)
+        {
+            Debug.Log("hit inventory button");
+            Inventory.ToggleOpen(transform.parent.gameObject, 0);
+            inventoryOpen = !inventoryOpen;
         }
     }
 
@@ -121,8 +132,20 @@ public class PlayerController : MonoBehaviour
     private void LateUpdate()
     {
         #region Mouse Input
-        yaw += sensitivity * Input.GetAxis("Mouse X");
-        pitch -= sensitivity * Input.GetAxis("Mouse Y");
+
+        if (!inventoryOpen)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+
+            yaw += sensitivity * Input.GetAxis("Mouse X");
+            pitch -= sensitivity * Input.GetAxis("Mouse Y");
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Confined;
+            Cursor.visible = true;
+        }
 
         pitch = Mathf.Clamp(pitch, -90.0f, 90.0f);
         #endregion

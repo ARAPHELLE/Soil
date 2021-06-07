@@ -60,6 +60,7 @@ namespace ProceduralToolkit.Samples
             noise2.SetNoiseType(config.noiseType2);
             noise.SetFrequency(config.noiseFrequency);
             noise2.SetFrequency(config.noiseFrequency);
+            noise.SetCellularReturnType(FastNoise.CellularReturnType.Distance2Mul);
 
             for (int x = 0; x < xSegments; x++)
             {
@@ -118,11 +119,26 @@ namespace ProceduralToolkit.Samples
             return draft;
         }
 
+<<<<<<< Updated upstream
         private static float GetHeight(int x, int z, int xSegments, int zSegments, Vector2 noiseOffset, FastNoise noise)
         {
             float noiseX = x / (float)xSegments + noiseOffset.x;
             float noiseZ = z / (float)zSegments + noiseOffset.y;
             return (noise.GetPerlin(noiseX / 16, noiseZ / 16)) + (noise.GetValue(noiseX / 32, noiseZ / 32) * 2) + Mathf.Clamp((noise.GetCubicFractal(noiseX / 24, noiseZ / 24) / 2) + ((noise.GetSimplex(noiseX / 4, noiseZ / 4) + (noise.GetPerlinFractal(noiseX, noiseZ) / 1.5f)) / 4), -0.5f, 1.5f); //  * (noise.GetCellular(noiseX / 6.25f, noiseZ / 4.25f) + 0.8f);
+=======
+        private static float GetHeight2Noise(int x, int z, int xSegments, int zSegments, Vector2 noiseOffset, FastNoise noise, FastNoise noise2)
+        {
+            float noiseX = x / (float)xSegments + noiseOffset.x;
+            float noiseZ = z / (float)zSegments + noiseOffset.y;
+            return (noise.GetValue(noiseX / 32, noiseZ / 32) * 2)
+                + Mathf.Clamp(
+                    (noise.GetCubicFractal(noiseX / 24, noiseZ / 24) / 2) + (
+                    (noise.GetSimplex(noiseX / 4, noiseZ / 4) + 
+                    (noise.GetPerlinFractal(noiseX, noiseZ) / 2)) / 4
+                    ), -0.5f, 1.5f
+                )
+                * (0.5f - noise.GetCellular(noiseX / 3, noiseZ / 3) + 0.1f);
+>>>>>>> Stashed changes
         }
     }
 }
