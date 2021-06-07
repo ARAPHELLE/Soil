@@ -9,8 +9,15 @@ public class TimeManager : MonoBehaviour
     private Text dayCounter;
     private int currentDay = 0;
 
-    int currentTime = 720;
+    int currentTime = 0;
     int midnight = 1440;
+
+    public Material skyMat;
+
+    private void Update()
+    {
+        //skyMat.SetFloat("Vector1_7ED56D81", Mathf.Abs(Mathf.Sin(((currentTime / 60.0f) / (midnight / 60.0f)) * Mathf.PI)));
+    }
 
     private void Start()
     {
@@ -30,7 +37,7 @@ public class TimeManager : MonoBehaviour
     private void RefreshTimerUI()
     {
         string minutes = (currentTime / 60).ToString();
-        string seconds = "00";//(currentTime % 60).ToString("00");
+        string seconds = (currentTime % 60).ToString("00");
         clockDisplay.text = $"{minutes}:{seconds}";
     }
 
@@ -41,7 +48,7 @@ public class TimeManager : MonoBehaviour
 
     IEnumerator Time()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.05f);
 
         currentTime += 1;
 
