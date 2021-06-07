@@ -53,7 +53,7 @@ namespace ProceduralToolkit.Samples
             }
 
             var noise = new FastNoise();
-            noise.SetNoiseType(FastNoise.NoiseType.SimplexFractal);
+            noise.SetNoiseType(FastNoise.NoiseType.Cubic);
             noise.SetFrequency(config.noiseFrequency);
 
             for (int x = 0; x < xSegments; x++)
