@@ -19,6 +19,8 @@ namespace ProceduralToolkit.Samples
             public float cellSize = 0.5f;
             public float noiseFrequency = 4;
             public Gradient gradient = ColorE.Gradient(Color.black, Color.white);
+            public FastNoise.NoiseType noiseType1;
+            public FastNoise.NoiseType noiseType2;
         }
 
         public static MeshDraft TerrainDraft(Config config)
@@ -53,8 +55,11 @@ namespace ProceduralToolkit.Samples
             }
 
             var noise = new FastNoise();
-            noise.SetNoiseType(FastNoise.NoiseType.Cubic);
+            noise.SetNoiseType(config.noiseType1);
+            var noise2 = new FastNoise();
+            noise2.SetNoiseType(config.noiseType2);
             noise.SetFrequency(config.noiseFrequency);
+            noise2.SetFrequency(config.noiseFrequency);
 
             for (int x = 0; x < xSegments; x++)
             {
@@ -67,10 +72,10 @@ namespace ProceduralToolkit.Samples
                     int index4 = index0 + 4;
                     int index5 = index0 + 5;
 
-                    float height00 = GetHeight(x + 0, z + 0, xSegments, zSegments, noiseOffset, noise);
-                    float height01 = GetHeight(x + 0, z + 1, xSegments, zSegments, noiseOffset, noise);
-                    float height10 = GetHeight(x + 1, z + 0, xSegments, zSegments, noiseOffset, noise);
-                    float height11 = GetHeight(x + 1, z + 1, xSegments, zSegments, noiseOffset, noise);
+                    float height00 = GetHeight2Noise(x + 0, z + 0, xSegments, zSegments, noiseOffset, noise, noise2);
+                    float height01 = GetHeight2Noise(x + 0, z + 1, xSegments, zSegments, noiseOffset, noise, noise2);
+                    float height10 = GetHeight2Noise(x + 1, z + 0, xSegments, zSegments, noiseOffset, noise, noise2);
+                    float height11 = GetHeight2Noise(x + 1, z + 1, xSegments, zSegments, noiseOffset, noise, noise2);
 
                     var vertex00 = new Vector3((x + 0)*xStep, height00*config.terrainSize.y, (z + 0)*zStep);
                     var vertex01 = new Vector3((x + 0)*xStep, height01*config.terrainSize.y, (z + 1)*zStep);
@@ -118,6 +123,13 @@ namespace ProceduralToolkit.Samples
             float noiseX = x/(float) xSegments + noiseOffset.x;
             float noiseZ = z/(float) zSegments + noiseOffset.y;
             return noise.GetNoise01(noiseX, noiseZ);
+        }
+
+        private static float GetHeight2Noise(int x, int z, int xSegments, int zSegments, Vector2 noiseOffset, FastNoise noise, FastNoise noise2)
+        {
+            float noiseX = x / (float)xSegments + noiseOffset.x;
+            float noiseZ = z / (float)zSegments + noiseOffset.y;
+            return noise.GetNoise01(noiseX, noiseZ) + noise2.GetNoise01(noiseX, noiseZ);
         }
     }
 }
