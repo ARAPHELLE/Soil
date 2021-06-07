@@ -54,7 +54,7 @@ namespace ProceduralToolkit.Samples
 
         private void Update()
         {
-            UpdateSkybox();
+            //UpdateSkybox();
         }
 
         public void Generate(bool randomizeConfig = true)

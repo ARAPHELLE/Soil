@@ -72,10 +72,10 @@ namespace ProceduralToolkit.Samples
                     int index4 = index0 + 4;
                     int index5 = index0 + 5;
 
-                    float height00 = GetHeight2Noise(x + 0, z + 0, xSegments, zSegments, noiseOffset, noise, noise2);
-                    float height01 = GetHeight2Noise(x + 0, z + 1, xSegments, zSegments, noiseOffset, noise, noise2);
-                    float height10 = GetHeight2Noise(x + 1, z + 0, xSegments, zSegments, noiseOffset, noise, noise2);
-                    float height11 = GetHeight2Noise(x + 1, z + 1, xSegments, zSegments, noiseOffset, noise, noise2);
+                    float height00 = GetHeight(x + 0, z + 0, xSegments, zSegments, noiseOffset, noise);
+                    float height01 = GetHeight(x + 0, z + 1, xSegments, zSegments, noiseOffset, noise);
+                    float height10 = GetHeight(x + 1, z + 0, xSegments, zSegments, noiseOffset, noise);
+                    float height11 = GetHeight(x + 1, z + 1, xSegments, zSegments, noiseOffset, noise);
 
                     var vertex00 = new Vector3((x + 0)*xStep, height00*config.terrainSize.y, (z + 0)*zStep);
                     var vertex01 = new Vector3((x + 0)*xStep, height01*config.terrainSize.y, (z + 1)*zStep);
@@ -120,16 +120,9 @@ namespace ProceduralToolkit.Samples
 
         private static float GetHeight(int x, int z, int xSegments, int zSegments, Vector2 noiseOffset, FastNoise noise)
         {
-            float noiseX = x/(float) xSegments + noiseOffset.x;
-            float noiseZ = z/(float) zSegments + noiseOffset.y;
-            return noise.GetNoise01(noiseX, noiseZ);
-        }
-
-        private static float GetHeight2Noise(int x, int z, int xSegments, int zSegments, Vector2 noiseOffset, FastNoise noise, FastNoise noise2)
-        {
             float noiseX = x / (float)xSegments + noiseOffset.x;
             float noiseZ = z / (float)zSegments + noiseOffset.y;
-            return noise.GetNoise01(noiseX, noiseZ) + noise2.GetNoise01(noiseX, noiseZ);
+            return (noise.GetPerlin(noiseX / 16, noiseZ / 16)) + (noise.GetValue(noiseX / 32, noiseZ / 32) * 2) + Mathf.Clamp((noise.GetCubicFractal(noiseX / 24, noiseZ / 24) / 2) + ((noise.GetSimplex(noiseX / 4, noiseZ / 4) + (noise.GetPerlinFractal(noiseX, noiseZ) / 1.5f)) / 4), -0.5f, 1.5f); //  * (noise.GetCellular(noiseX / 6.25f, noiseZ / 4.25f) + 0.8f);
         }
     }
 }

@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
 
         if (_player.sprinting)
         {
-            _player.stamina -= 14f * Time.fixedDeltaTime;
+            _player.stamina -= 12f * Time.fixedDeltaTime;
             _player.speed = _player.runSpeed;
         }
         else
