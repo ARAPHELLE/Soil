@@ -25,6 +25,7 @@ namespace ProceduralToolkit.Samples
 
         public GameObject tree;
         public GameObject rock;
+        public GameObject[] clusters;
         public GameObject player;
 
         private Mesh terrainMesh;
@@ -101,6 +102,17 @@ namespace ProceduralToolkit.Samples
                 if (Physics.Raycast(startPos, Vector3.down, out hit, Mathf.Infinity, ableToPutStructuresOn))
                 {
                     Instantiate(tree, position: hit.point, Quaternion.identity);
+                }
+            }
+
+            for (int i = 0; i < 200; i++)
+            {
+                Vector3 startPos = RandomPointAboveTerrain();
+
+                RaycastHit hit;
+                if (Physics.Raycast(startPos, Vector3.down, out hit, Mathf.Infinity, ableToPutStructuresOn))
+                {
+                    Instantiate(clusters[Random.Range(0, clusters.Length)], position: hit.point, Quaternion.identity);
                 }
             }
 
