@@ -13,6 +13,7 @@ public class Inventory : MonoBehaviour
     public int selected;
 
     public static InventoryMouseIcon mouse;
+    public static ClickableSlot rlickStart;
     public static InvSlot mouseStored = new InvSlot();
 
     public bool hotbar = false;
@@ -76,10 +77,16 @@ public class Inventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 globalMousePos;
-        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(mouse.display.rectTransform, Input.mousePosition, Camera.current, out globalMousePos))
+        if (mouse != null)
         {
-            mouse.position = globalMousePos;
+            Vector3 globalMousePos;
+            if (RectTransformUtility.ScreenPointToWorldPointInRectangle(mouse.display.rectTransform, Input.mousePosition, Camera.current, out globalMousePos))
+            {
+                mouse.position = globalMousePos;
+            }
+            mouse.definition = mouseStored.contained.prop.def;
+            mouse.empty = mouseStored.contained.IsEmpty();
+            mouse.amount = mouseStored.contained.count;
         }
     }
 }

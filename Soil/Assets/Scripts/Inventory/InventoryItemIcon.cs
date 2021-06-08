@@ -32,11 +32,10 @@ public class InventoryItemIcon : MonoBehaviour
             amountBack.text = amount.ToString();
             amountFront.text = amount.ToString();
         }
-        else
+        if(definition == null || empty)
         {
             amountBack.text = "";
             amountFront.text = "";
         }
-        display.rectTransform.position = new Vector3(position.x,position.y,-1);
     }
 }

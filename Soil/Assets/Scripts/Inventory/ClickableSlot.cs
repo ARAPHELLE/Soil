@@ -14,7 +14,7 @@ public class ClickableSlot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     public InventoryItemIcon icon;
 
-    public void Update()
+    void Start()
     {
         UpdateIcon();
     }
@@ -25,9 +25,12 @@ public class ClickableSlot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
         icon.empty = invslot.contained.IsEmpty();
         icon.amount = invslot.contained.count;
 
-        Inventory.mouse.definition = Inventory.mouseStored.contained.prop.def;
-        Inventory.mouse.empty = Inventory.mouseStored.contained.IsEmpty();
-        Inventory.mouse.amount = Inventory.mouseStored.contained.count;
+        if (Inventory.mouse != null)
+        {
+            Inventory.mouse.definition = Inventory.mouseStored.contained.prop.def;
+            Inventory.mouse.empty = Inventory.mouseStored.contained.IsEmpty();
+            Inventory.mouse.amount = Inventory.mouseStored.contained.count;
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
@@ -50,13 +53,26 @@ public class ClickableSlot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             held = false;
             return;
         }
-        if(eventData.button == PointerEventData.InputButton.Right)
-        {   
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
             if (Inventory.mouseStored.contained.IsEmpty() || Inventory.mouseStored.contained.prop.Equals(invslot.contained.prop))
             {
                 Inventory.mouseStored.contained = invslot.TakeHalf(Inventory.mouseStored.contained.count);
             }
+            Inventory.rlickStart = this;
             UpdateIcon();
+            held = false;
+            return;
+        }
+        if (Inventory.mouseStored.contained.IsEmpty())
+        {
+            Inventory.mouseStored.contained = invslot.contained;
+            Inventory.mouse.empty = false;
+        }
+        else
+        {
+            Inventory.mouseStored.contained = Item.Drop(Inventory.mouseStored.contained);
+            eventData.pointerDrag = null;
             held = false;
             return;
         }
@@ -75,11 +91,7 @@ public class ClickableSlot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
     {
         if (!held) return;
 
-        Vector3 globalMousePos;
-        if (RectTransformUtility.ScreenPointToWorldPointInRectangle(icon.display.rectTransform, eventData.position, eventData.pressEventCamera, out globalMousePos))
-        {
-            icon.position = globalMousePos;
-        }
+        icon.empty = true;
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -90,12 +102,10 @@ public class ClickableSlot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             InvSlot slot = Inventory.mouseStored;
             if (slot != null)
             {
-                ClickableSlot orig = eventData.pointerDrag.GetComponent<ClickableSlot>();
-                InvSlot origslot = orig.invslot;
                 invslot.SwapItems(slot);
                 UpdateIcon();
-                orig.invslot = origslot;
-                orig.UpdateIcon();
+                Inventory.rlickStart.invslot.contained = slot.contained;
+                Inventory.rlickStart.UpdateIcon();
             }
             return;
         }
@@ -104,6 +114,7 @@ public class ClickableSlot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             ClickableSlot slot = eventData.pointerDrag.GetComponent<ClickableSlot>();
             if (slot != null)
             {
+                Inventory.mouseStored.contained = Item.empty;
                 if (slot == this)
                 {
                     icon.position = icon.startPosition;
