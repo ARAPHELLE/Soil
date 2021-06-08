@@ -24,6 +24,6 @@ Material:
     - _Exponent2: 1
     - _Intensity: 1
     m_Colors:
-    - _GroundColor: {r: 0.75, g: 0.75, b: 0.75, a: 0}
-    - _HorizonColor: {r: 0.25, g: 0.25, b: 0.25, a: 0}
-    - _SkyColor: {r: 1, g: 1, b: 1, a: 0}
+    - _GroundColor: {r: 0.75, g: 0.99757725, b: 1, a: 0}
+    - _HorizonColor: {r: 0.8349056, g: 0.98772025, b: 1, a: 0}
+    - _SkyColor: {r: 0.5529412, g: 0.8156846, b: 1, a: 0}
