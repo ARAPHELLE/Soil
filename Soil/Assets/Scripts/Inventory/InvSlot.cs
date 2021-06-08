@@ -71,8 +71,8 @@ public class InvSlot
     {
         if (!contained.IsEmpty() && (Inventory.mouseStored.contained.prop.Equals(contained.prop) || Inventory.mouseStored.contained.IsEmpty()))
         {
-            Item newContained = new Item(contained, Mathf.CeilToInt(contained.count / 2.0f));
-            Item newItem = new Item(contained, count + Mathf.FloorToInt(contained.count / 2.0f));
+            Item newContained = new Item(contained, Mathf.FloorToInt(contained.count / 2.0f));
+            Item newItem = new Item(contained, count + Mathf.CeilToInt(contained.count / 2.0f));
 
             contained = newContained;
 

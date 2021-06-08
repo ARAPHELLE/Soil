@@ -86,7 +86,6 @@ public class PlayerController : MonoBehaviour
 
         if(inventory)
         {
-            Debug.Log("hit inventory button");
             Inventory.ToggleOpen(transform.parent.gameObject, 0);
             inventoryOpen = !inventoryOpen;
         }

@@ -81,7 +81,10 @@ public class ClickableSlot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        invslot.contained = Item.Drop(invslot.contained);
+        if (held)
+        {
+            invslot.contained = Item.Drop(invslot.contained);
+        }
         Inventory.mouseStored.contained = Item.Drop(Inventory.mouseStored.contained);
         held = false;
         UpdateIcon();
@@ -103,9 +106,8 @@ public class ClickableSlot : MonoBehaviour, IDragHandler, IBeginDragHandler, IEn
             if (slot != null)
             {
                 invslot.SwapItems(slot);
+                icon.position = icon.startPosition;
                 UpdateIcon();
-                Inventory.rlickStart.invslot.contained = slot.contained;
-                Inventory.rlickStart.UpdateIcon();
             }
             return;
         }
