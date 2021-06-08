@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class InventoryItemIcon : MonoBehaviour
+public class InventoryMouseIcon : MonoBehaviour
 {
     public ItemDefinition definition;
     public Image display;
@@ -19,6 +19,8 @@ public class InventoryItemIcon : MonoBehaviour
 
     public void Start()
     {
+        Inventory.mouse = this;
+
         startPosition = display.rectTransform.position;
         position = startPosition;
     }
@@ -37,6 +39,6 @@ public class InventoryItemIcon : MonoBehaviour
             amountBack.text = "";
             amountFront.text = "";
         }
-        display.rectTransform.position = new Vector3(position.x,position.y,-1);
+        display.rectTransform.position = new Vector3(position.x, position.y, -1);
     }
 }

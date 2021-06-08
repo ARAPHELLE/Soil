@@ -46,40 +46,35 @@ public struct Item
         return false;
     }
 
-    public static void Drop(Item contained)
+    public static Item Drop(Item contained)
     {
-        //sus
-        Debug.Log($"dropped item {contained.prop.customname}");
+        return empty;
     }
 
     public Item(ItemProperties inprop, int incount)
     {
         prop = inprop;
         count = incount;
-
-        Debug.Log($"item made! {incount.ToString()} of {inprop.def.displayName}");
+        if (count <= 0) this = empty;
     }
 
     public Item(Item tocopy)
     {
         prop = tocopy.prop;
         count = tocopy.count;
-
-        Debug.Log($"item made! {tocopy.count} of {tocopy.prop.def.displayName}");
+        if (count <= 0) this = empty;
     }
     public Item(Item tocopy, int amount)
     {
         prop = tocopy.prop;
         count = amount;
-
-        Debug.Log($"item made! {amount.ToString()} of {tocopy.prop.def.displayName}");
+        if (count <= 0) this = empty;
     }
 
     public Item(ItemDefinition definition, int amount)
     {
         prop = new ItemProperties(definition);
         count = amount;
-
-        Debug.Log($"item made! {amount.ToString()} of {(definition ? definition.displayName : "null" )}");
+        if (count <= 0) this = empty;
     }
 }

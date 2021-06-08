@@ -174,7 +174,6 @@ public class PlayerController : MonoBehaviour
         {
             if (isGrounded)
             {
-                Debug.Log("Landed");
                 targetCamOffset = -0.6f;
 
                 if (airTime > 1f)
