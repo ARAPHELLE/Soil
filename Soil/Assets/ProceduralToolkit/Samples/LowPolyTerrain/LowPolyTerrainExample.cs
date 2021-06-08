@@ -8,6 +8,8 @@ namespace ProceduralToolkit.Samples
     /// </summary>
     public class LowPolyTerrainExample : ConfiguratorBase
     {
+        public LayerMask ableToPutStructuresOn;
+
         public MeshFilter terrainMeshFilter;
         public MeshCollider terrainMeshCollider;
         public RectTransform leftPanel;
@@ -20,6 +22,9 @@ namespace ProceduralToolkit.Samples
         private const float maxCellSize = 1;
         private const int minNoiseFrequency = 1;
         private const int maxNoiseFrequency = 8;
+
+        public GameObject tree;
+        public GameObject rock;
 
         private Mesh terrainMesh;
 
@@ -75,6 +80,45 @@ namespace ProceduralToolkit.Samples
             draft.Move(Vector3.left*config.terrainSize.x/2 + Vector3.back*config.terrainSize.z/2);
             AssignDraftToMeshFilter(draft, terrainMeshFilter, ref terrainMesh);
             terrainMeshCollider.sharedMesh = terrainMesh;
+
+            for (int i = 0; i < 600; i++)
+            {
+                Vector3 startPos = RandomPointAboveTerrain();
+
+                RaycastHit hit;
+                if (Physics.Raycast(startPos, Vector3.down, out hit, Mathf.Infinity, ableToPutStructuresOn))
+                {
+                    Instantiate(tree, position: hit.point, Quaternion.identity);
+                }
+            }
+
+            for (int i = 0; i < 700; i++)
+            {
+                Vector3 startPos = RandomPointAboveTerrain();
+
+                RaycastHit hit;
+                if (Physics.Raycast(startPos, Vector3.down, out hit, Mathf.Infinity, ableToPutStructuresOn))
+                {
+                    GameObject newRock = Instantiate(rock, position: hit.point, Quaternion.identity);
+
+                    Vector3 newUp = hit.normal;
+                    Vector3 oldForward = newRock.transform.forward;
+
+                    Vector3 newRight = Vector3.Cross(newUp, oldForward);
+                    Vector3 newForward = Vector3.Cross(newRight, newUp);
+
+                    newRock.transform.rotation = Quaternion.LookRotation(newForward, newUp);
+                }
+            }
+        }
+
+        private Vector3 RandomPointAboveTerrain()
+        {
+            return new Vector3(
+                Random.Range(transform.position.x - config.terrainSize.x / 2, transform.position.x + config.terrainSize.x / 2),
+                transform.position.y + config.terrainSize.y * 2,
+                Random.Range(transform.position.z - config.terrainSize.z / 2, transform.position.z + config.terrainSize.z / 2)
+            );
         }
     }
 }

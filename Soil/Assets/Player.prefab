@@ -1781,7 +1781,7 @@ MonoBehaviour:
   groundCheck: {fileID: 4075731239687137827}
   groundMask:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 1280
   bodyCollider: {fileID: 4075731238707522771}
   nonStickMaterial: {fileID: 13400000, guid: 43d9f747806ee5d4e954b43afcfd8df5, type: 2}
   _player: {fileID: 4075731240038415264}
