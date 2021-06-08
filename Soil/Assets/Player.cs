@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 public class Player : MonoBehaviour
 {
     public int health = 100;
@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.F8)) { SceneManager.LoadScene(0); }
+
         health = Mathf.Clamp(health, 0, maxHealth);
         hunger = Mathf.Clamp(hunger, 0, maxHunger);
         stamina = Mathf.Clamp(stamina, 0, maxStamina);
