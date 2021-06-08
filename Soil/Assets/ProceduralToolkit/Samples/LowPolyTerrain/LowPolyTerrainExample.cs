@@ -25,6 +25,7 @@ namespace ProceduralToolkit.Samples
 
         public GameObject tree;
         public GameObject rock;
+        public GameObject player;
 
         private Mesh terrainMesh;
 
@@ -55,6 +56,17 @@ namespace ProceduralToolkit.Samples
                 });
 
             InstantiateControl<ButtonControl>(leftPanel).Initialize("Generate", () => Generate());
+        }
+
+        private void Start()
+        {
+            Vector3 startPos = RandomPointAboveTerrain();
+
+            RaycastHit hit;
+            if (Physics.Raycast(startPos + new Vector3(0, 0.515f, 0), Vector3.down, out hit, Mathf.Infinity, ableToPutStructuresOn))
+            {
+                Instantiate(player, position: hit.point, Quaternion.identity);
+            }
         }
 
         private void Update()
