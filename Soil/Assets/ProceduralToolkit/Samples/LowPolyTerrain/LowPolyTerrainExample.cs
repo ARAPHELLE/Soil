@@ -23,8 +23,8 @@ namespace ProceduralToolkit.Samples
         private const int minNoiseFrequency = 1;
         private const int maxNoiseFrequency = 8;
 
-        public GameObject tree;
-        public GameObject rock;
+        public GameObject[] trees;
+        public GameObject[] rocks;
         public GameObject[] clusters;
         public GameObject player;
 
@@ -101,11 +101,11 @@ namespace ProceduralToolkit.Samples
                 RaycastHit hit;
                 if (Physics.Raycast(startPos, Vector3.down, out hit, Mathf.Infinity, ableToPutStructuresOn))
                 {
-                    Instantiate(tree, position: hit.point, Quaternion.identity);
+                    Instantiate(trees[Random.Range(0, trees.Length)], position: hit.point, Quaternion.identity);
                 }
             }
 
-            for (int i = 0; i < 200; i++)
+            for (int i = 0; i < 400; i++)
             {
                 Vector3 startPos = RandomPointAboveTerrain();
 
@@ -123,7 +123,7 @@ namespace ProceduralToolkit.Samples
                 RaycastHit hit;
                 if (Physics.Raycast(startPos, Vector3.down, out hit, Mathf.Infinity, ableToPutStructuresOn))
                 {
-                    GameObject newRock = Instantiate(rock, position: hit.point, Quaternion.identity);
+                    GameObject newRock = Instantiate(rocks[Random.Range(0, rocks.Length)], position: hit.point, Quaternion.identity);
 
                     Vector3 newUp = hit.normal;
                     Vector3 oldForward = newRock.transform.forward;
